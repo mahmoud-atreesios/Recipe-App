@@ -13,21 +13,20 @@ struct OnBoardingScreenUI: View {
     @State var TitleOfScreen: String = "Title of Onboarding"
     @State var captionOfScreen: String = "caption of the onboarding screen goes here caption of the onboarding screen goes here caption of the onboarding screen goes here"
     
-    private let backgroundColor = Color(red: 133 / 255, green: 169 / 255, blue: 143 / 255)
-    private let rectangleColor = Color(red: 211 / 255, green: 241 / 255, blue: 223 / 255)
+    @Binding var pageSelection: Int
     
     var body: some View {
         ZStack {
-            
-            backgroundColor
+            Color.onBoardingBackgroundColor
             
             VStack {
                 ThreeDimensionImageSection()
-                Spacer()
                 
                 titleAndCaption(title: TitleOfScreen, caption: captionOfScreen)
+                
+                showButton()
+                
                 Spacer()
-                    .padding()
             }
         }
         .ignoresSafeArea()
@@ -38,14 +37,19 @@ struct OnBoardingScreenUI: View {
 extension OnBoardingScreenUI {
     private func ThreeDimensionImageSection() -> some View {
         ZStack {
+            
+            Rectangle()
+                .frame(width: .infinity, height: 550)
+                .foregroundStyle(Color.onBoardingRectangleColor)
+                .clipShape(BottomRoundedRectangle(radius: 50))
+            
             ThreeDimensionImage()
                 .frame(width: .infinity, height: 550)
-                .foregroundStyle(.gray)
-                .cornerRadius(50)
+                .clipShape(BottomRoundedRectangle(radius: 50))
             
             RoundedRectangle(cornerRadius: 10)
                 .frame(width: 200, height: 50)
-                .foregroundStyle(rectangleColor)
+                .foregroundStyle(Color.onBoardingRectangleColor)
                 .offset(x: 90, y: 230)
         }
     }
@@ -68,6 +72,29 @@ extension OnBoardingScreenUI {
     }
 }
 
+//MARK: - Show Button logic
+extension OnBoardingScreenUI {
+    @ViewBuilder
+    private func showButton() -> some View {
+        if pageSelection == 2 {
+            Button {
+                print("Go to Home Screen")
+            } label: {
+                RoundedRectangle(cornerRadius: 15)
+                    .frame(width: 210, height: 60)
+                    .foregroundColor(Color.getStartedButtonColor)
+                    .overlay(
+                        Text("Get Started")
+                            .foregroundColor(.white)
+                            .bold()
+                    )
+            }
+            .padding()
+        }
+    }
+}
+
+
 //MARK: - Spline setup
 struct ThreeDimensionImage: View {
     var body: some View {
@@ -77,5 +104,6 @@ struct ThreeDimensionImage: View {
 }
 
 #Preview {
-    OnBoardingScreenUI()
+    OnBoardingScreenUI(pageSelection: OnBoardingScreen().$pageSelection)
 }
+

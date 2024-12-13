@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		1C1040DA2D0BD4680058B314 /* SplineRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 1C1040D92D0BD4680058B314 /* SplineRuntime */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		1CD24FB42D0B5F4C0029F6AE /* Recipe App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Recipe App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C1040DA2D0BD4680058B314 /* SplineRuntime in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = "Recipe App";
 			packageProductDependencies = (
+				1C1040D92D0BD4680058B314 /* SplineRuntime */,
 			);
 			productName = "Recipe App";
 			productReference = 1CD24FB42D0B5F4C0029F6AE /* Recipe App.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = 1CD24FAB2D0B5F4C0029F6AE;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				1C1040D82D0BD4680058B314 /* XCRemoteSwiftPackageReference "spline-ios" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 1CD24FB52D0B5F4C0029F6AE /* Products */;
 			projectDirPath = "";
@@ -324,6 +333,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1C1040D82D0BD4680058B314 /* XCRemoteSwiftPackageReference "spline-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/splinetool/spline-ios.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1C1040D92D0BD4680058B314 /* SplineRuntime */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1C1040D82D0BD4680058B314 /* XCRemoteSwiftPackageReference "spline-ios" */;
+			productName = SplineRuntime;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 1CD24FAC2D0B5F4C0029F6AE /* Project object */;
 }

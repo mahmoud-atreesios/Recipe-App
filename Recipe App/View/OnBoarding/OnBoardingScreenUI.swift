@@ -20,10 +20,11 @@ struct OnBoardingScreenUI: View {
     
     var body: some View {
         ZStack {
-            Color.onBoardingBackgroundColor
+            Color.white
             
             VStack {
                 ThreeDimensionImageSection()
+                    .padding(.top, 15)
                 
                 titleAndCaption(title: TitleOfScreen, caption: captionOfScreen)
                 
@@ -42,20 +43,9 @@ struct OnBoardingScreenUI: View {
 extension OnBoardingScreenUI {
     private func ThreeDimensionImageSection() -> some View {
         ZStack {
-            
-            Rectangle()
-                .frame(width: .infinity, height: 450)
-                .foregroundStyle(Color.onBoardingRectangleColor)
-                .clipShape(BottomRoundedRectangle(radius: 50))
-            
             ThreeDimensionImage(url: $url)
-                .frame(width: .infinity, height: 450)
-                .clipShape(BottomRoundedRectangle(radius: 50))
-            
-            RoundedRectangle(cornerRadius: 10)
-                .frame(width: 200, height: 50)
-                .foregroundStyle(Color.onBoardingRectangleColor)
-                .offset(x: 90, y: 180)
+                .frame(width: 340, height: 450)
+                .clipShape(Circle())
         }
     }
 }
@@ -63,14 +53,15 @@ extension OnBoardingScreenUI {
 //MARK: - Title and Caption setup
 extension OnBoardingScreenUI {
     private func titleAndCaption(title: String, caption: String) -> some View {
-        VStack {
+        VStack() {
             Text(title)
                 .font(.title)
-                .foregroundStyle(.white)
+                .foregroundStyle(.black)
                 .padding(.vertical, 10)
             Text(caption)
                 .font(.headline)
-                .foregroundStyle(.white)
+                .foregroundStyle(.black)
+                .multilineTextAlignment(.center)
         }
         .opacity(pageSelection == pageIndex ? 1 : 0)
         .animation(.easeInOut(duration: 0.5), value: pageSelection)
@@ -94,6 +85,7 @@ extension OnBoardingScreenUI {
                     .overlay(
                         Text("Get Started")
                             .foregroundColor(.white)
+                            .font(.title3)
                             .bold()
                     )
             }
@@ -113,7 +105,7 @@ extension OnBoardingScreenUI {
                     .overlay(
                         Text("Next")
                             .foregroundColor(.white)
-                            .font(.title2)
+                            .font(.title3)
                             .bold()
                     )
             }

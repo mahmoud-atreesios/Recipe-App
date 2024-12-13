@@ -12,8 +12,11 @@ struct OnBoardingScreenUI: View {
     
     @State var TitleOfScreen: String = "Title of Onboarding"
     @State var captionOfScreen: String = "caption of the onboarding screen goes here caption of the onboarding screen goes here caption of the onboarding screen goes here"
+    @State var url: String = "https://build.spline.design/kSdDtImTdXAWT7Za6KLO/scene.splineswift"
     
+    @State var pageIndex: Int = 0
     @Binding var pageSelection: Int
+    
     
     var body: some View {
         ZStack {
@@ -23,6 +26,8 @@ struct OnBoardingScreenUI: View {
                 ThreeDimensionImageSection()
                 
                 titleAndCaption(title: TitleOfScreen, caption: captionOfScreen)
+                
+                Spacer()
                 
                 showButton()
                 
@@ -39,18 +44,18 @@ extension OnBoardingScreenUI {
         ZStack {
             
             Rectangle()
-                .frame(width: .infinity, height: 550)
+                .frame(width: .infinity, height: 450)
                 .foregroundStyle(Color.onBoardingRectangleColor)
                 .clipShape(BottomRoundedRectangle(radius: 50))
             
-            ThreeDimensionImage()
-                .frame(width: .infinity, height: 550)
+            ThreeDimensionImage(url: $url)
+                .frame(width: .infinity, height: 450)
                 .clipShape(BottomRoundedRectangle(radius: 50))
             
             RoundedRectangle(cornerRadius: 10)
                 .frame(width: 200, height: 50)
                 .foregroundStyle(Color.onBoardingRectangleColor)
-                .offset(x: 90, y: 230)
+                .offset(x: 90, y: 180)
         }
     }
 }
@@ -67,6 +72,8 @@ extension OnBoardingScreenUI {
                 .font(.headline)
                 .foregroundStyle(.white)
         }
+        .opacity(pageSelection == pageIndex ? 1 : 0)
+        .animation(.easeInOut(duration: 0.5), value: pageSelection)
         .padding(.horizontal, 10)
         .bold()
     }
@@ -82,13 +89,36 @@ extension OnBoardingScreenUI {
             } label: {
                 RoundedRectangle(cornerRadius: 15)
                     .frame(width: 210, height: 60)
-                    .foregroundColor(Color.getStartedButtonColor)
+                    .foregroundColor(Color.onBoardingBackgroundColor)
+                    .shadow(radius: 7)
                     .overlay(
                         Text("Get Started")
                             .foregroundColor(.white)
                             .bold()
                     )
             }
+            .opacity(pageSelection == pageIndex ? 1 : 0)
+            .animation(.easeOut, value: pageSelection)
+            .padding()
+        }else {
+            Button {
+                withAnimation(.easeInOut) {
+                    pageSelection += 1
+                }
+            } label: {
+                RoundedRectangle(cornerRadius: 15)
+                    .frame(width: 180, height: 55)
+                    .foregroundColor(Color.onBoardingBackgroundColor)
+                    .shadow(radius: 7)
+                    .overlay(
+                        Text("Next")
+                            .foregroundColor(.white)
+                            .font(.title2)
+                            .bold()
+                    )
+            }
+            .opacity(pageSelection == pageIndex ? 1 : 0)
+            .animation(.easeOut, value: pageSelection)
             .padding()
         }
     }
@@ -97,8 +127,12 @@ extension OnBoardingScreenUI {
 
 //MARK: - Spline setup
 struct ThreeDimensionImage: View {
+    
+    @Binding var url: String
+    
     var body: some View {
-        let url = URL(string: "https://build.spline.design/1vDOGeVRwLQj2E9o9xmX/scene.splineswift")!
+        
+        let url = URL(string: url)!
         SplineView(sceneFileURL: url).ignoresSafeArea(.all)
     }
 }

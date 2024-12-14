@@ -10,6 +10,10 @@ import SplineRuntime
 
 struct OnBoardingScreenUI: View {
     
+    @AppStorage("rootHomeScreen") var rootHomeScreen = false
+
+    @EnvironmentObject var appState: AppState
+    
     @State var TitleOfScreen: String = "Title of Onboarding"
     @State var captionOfScreen: String = "caption of the onboarding screen goes here caption of the onboarding screen goes here caption of the onboarding screen goes here"
     @State var url: String = "https://build.spline.design/kSdDtImTdXAWT7Za6KLO/scene.splineswift"
@@ -25,13 +29,9 @@ struct OnBoardingScreenUI: View {
             VStack {
                 ThreeDimensionImageSection()
                     .padding(.top, 15)
-                
                 titleAndCaption(title: TitleOfScreen, caption: captionOfScreen)
-                
                 Spacer()
-                
                 showButton()
-                
                 Spacer()
             }
         }
@@ -76,7 +76,8 @@ extension OnBoardingScreenUI {
     private func showButton() -> some View {
         if pageSelection == 2 {
             Button {
-                print("Go to Home Screen")
+                appState.currentView = .home
+                rootHomeScreen = true
             } label: {
                 RoundedRectangle(cornerRadius: 15)
                     .frame(width: 210, height: 60)

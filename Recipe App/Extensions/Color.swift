@@ -8,7 +8,16 @@
 import SwiftUICore
 
 extension Color{
+    
+    // ONBOARDING SCREEN
     static let onBoardingBackgroundColor = Color(red: 133 / 255, green: 169 / 255, blue: 143 / 255)
     static let onBoardingRectangleColor = Color(red: 208/255, green: 232/255, blue: 197/255)
-//    static let getStartedButtonColor = Color(red: 90/255, green: 108/255, blue: 87/255)
+    
+    // HOME SCREEN
+    static let mainAppBackground = Color(red: 251 / 255, green: 251 / 255, blue: 251 / 255)
+    
 }
+
+
+
+//    static let getStartedButtonColor = Color(red: 90/255, green: 108/255, blue: 87/255)

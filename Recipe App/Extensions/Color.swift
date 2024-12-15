@@ -15,9 +15,6 @@ extension Color{
     
     // HOME SCREEN
     static let mainAppBackground = Color(red: 251 / 255, green: 251 / 255, blue: 251 / 255)
+    static let seeAllColor = Color(red: 17/255, green: 139/255, blue: 80/255)
     
 }
-
-
-
-//    static let getStartedButtonColor = Color(red: 90/255, green: 108/255, blue: 87/255)

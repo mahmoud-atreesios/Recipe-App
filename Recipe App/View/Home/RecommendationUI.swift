@@ -9,9 +9,9 @@ import SwiftUI
 
 struct RecommendationUI: View {
     
-    @State var imageName: String = "creamyPasta"
+    @State var imageUrl: String = "https://picsum.photos/250"
     @State var foodName: String = "Creamy Pasta"
-    @State var cooker: String = "By David Charles"
+    @State var cooker: [Credit]?
 
     
     var body: some View {
@@ -20,19 +20,34 @@ struct RecommendationUI: View {
             Button {
                 print("Food image tapped")
             } label: {
-                Image(imageName)
-                    .resizable()
-                    .frame(width: 180, height: 250)
-                    .clipShape(RoundedRectangle(cornerRadius: 30))
+                AsyncImage(url: URL(string: imageUrl)) { recipeImage in
+                    recipeImage
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: 180, height: 250)
+                        .clipShape(RoundedRectangle(cornerRadius: 30))
+                } placeholder: {
+                    ProgressView()
+                }
             }
+
             
             VStack(alignment: .leading) {
                 Text(foodName)
                     .frame(width: 180,alignment: .leading)
-                Text("By \(cooker)")
-                    .frame(width: 180,alignment: .leading)
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
+                
+                if let cookerName = cooker?.first?.name {
+                    Text("By \(cookerName)")
+                        .frame(width: 180,alignment: .leading)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }else {
+                    Text("By Charles Johnson")
+                        .frame(width: 180,alignment: .leading)
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+                
             }
             
             .bold()

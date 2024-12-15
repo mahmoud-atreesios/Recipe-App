@@ -23,16 +23,9 @@ struct HomeScreen: View {
             VStack(alignment: .leading) {
                 headerView()
                 searchBar()
-                recommendationBar()
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack {
-                        if let recipes = networkViewModel.recipes?.results {
-                            ForEach(recipes) { recipe in
-                                RecommendationUI(imageName: "creamyPasta", foodName: recipe.name, cooker: "\(recipe.credits)")
-                            }
-                        }
-                    }
-                }
+                categoryBar(title: "Recommendation")
+                recommendationView()
+                categoryBar(title: "Recipe Of The Week")
                 Spacer()
             }
             
@@ -95,9 +88,9 @@ extension HomeScreen {
 
 //MARK: - Recommendation bar
 extension HomeScreen {
-    private func recommendationBar() -> some View {
+    private func categoryBar(title: String) -> some View {
         HStack {
-            Text("Recommendation")
+            Text(title)
                 .font(.title2)
                 .fontWeight(.semibold)
             Spacer()
@@ -107,7 +100,21 @@ extension HomeScreen {
         }
         .padding(.horizontal, 25)
         .padding(.top, 25)
-        //.padding(25)
+    }
+}
+
+//MARK: - Recomendation View
+extension HomeScreen {
+    private func recommendationView() -> some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack {
+                if let recipes = networkViewModel.recipes?.results {
+                    ForEach(recipes.prefix(7)) { recipe in
+                        RecommendationUI(imageUrl: recipe.thumbnailURL, foodName: recipe.name, cooker: recipe.credits)
+                    }
+                }
+            }
+        }
     }
 }
 

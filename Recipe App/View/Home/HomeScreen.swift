@@ -10,9 +10,7 @@ import SwiftUI
 struct HomeScreen: View {
     
     @AppStorage("rootHomeScreen") var rootHomeScreen: Bool?
-    
     @StateObject var networkViewModel = NetworkViewModel()
-
     @State var sth: String = ""
     
     var body: some View {
@@ -20,15 +18,17 @@ struct HomeScreen: View {
             
             Color.mainAppBackground.ignoresSafeArea()
             
-            VStack(alignment: .leading) {
-                headerView()
-                searchBar()
-                categoryBar(title: "Recommendation")
-                recommendationView()
-                categoryBar(title: "Recipe Of The Week")
-                Spacer()
+            ScrollView(showsIndicators: false) {
+                VStack(alignment: .leading) {
+                    headerView()
+                    searchBar()
+                    categoryBar(title: "Recommendation")
+                    recommendationView()
+                    categoryBar(title: "Recipes Of The Week")
+                    recipeOfTheWeekView()
+                    Spacer()
+                }
             }
-            
         }
     }
 }
@@ -98,7 +98,7 @@ extension HomeScreen {
                 .font(.caption)
                 .foregroundStyle(Color.seeAllColor)
         }
-        .padding(.horizontal, 25)
+        .padding(.horizontal, 15)
         .padding(.top, 25)
     }
 }
@@ -107,13 +107,30 @@ extension HomeScreen {
 extension HomeScreen {
     private func recommendationView() -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack {
+            HStack(spacing: 10) {
                 if let recipes = networkViewModel.recipes?.results {
                     ForEach(recipes.prefix(7)) { recipe in
                         RecommendationUI(imageUrl: recipe.thumbnailURL, foodName: recipe.name, cooker: recipe.credits)
                     }
                 }
             }
+            .padding(.leading, 15)
+        }
+    }
+}
+
+//MARK: - RecipeOfTheWeekView
+extension HomeScreen{
+    private func recipeOfTheWeekView() -> some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 10) {
+                if let recipes = networkViewModel.recipes?.results {
+                    ForEach(recipes.suffix(7)) { recipe in
+                        RecipeOfTheWeekUI(imageUrl: recipe.thumbnailURL, foodName: recipe.name, cooker: recipe.credits)
+                    }
+                }
+            }
+            .padding(.horizontal, 15)
         }
     }
 }

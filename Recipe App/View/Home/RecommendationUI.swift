@@ -54,7 +54,7 @@ struct RecommendationUI: View {
             .padding(.leading, 10)
             Spacer()
         }
-        .padding(.leading, 25)
+        //.padding(.leading, 25)
     }
 }
 

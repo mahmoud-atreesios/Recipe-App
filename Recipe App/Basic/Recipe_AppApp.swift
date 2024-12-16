@@ -31,7 +31,7 @@ struct Recipe_AppApp: App {
                 OnBoardingScreen()
                     .environmentObject(appState)
             }else {
-                HomeScreen()
+                MainView()
                     .environmentObject(appState)
             }
         }

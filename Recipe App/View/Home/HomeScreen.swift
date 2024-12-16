@@ -26,6 +26,7 @@ struct HomeScreen: View {
                     recommendationView()
                     categoryBar(title: "Recipes Of The Week")
                     recipeOfTheWeekView()
+                    additionalSpace()
                     Spacer()
                 }
             }
@@ -135,6 +136,13 @@ extension HomeScreen{
     }
 }
 
+extension HomeScreen {
+    private func additionalSpace() -> some View {
+        Rectangle()
+            .frame(width: .infinity, height: 45)
+            .foregroundStyle(Color.clear)
+    }
+}
 #Preview {
     HomeScreen()
 }

@@ -17,20 +17,26 @@ struct RecommendationUI: View {
     var body: some View {
         VStack(alignment: .leading) {
             
-            Button {
-                print("Food image tapped")
-            } label: {
-                AsyncImage(url: URL(string: imageUrl)) { recipeImage in
-                    recipeImage
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 180, height: 250)
-                        .clipShape(RoundedRectangle(cornerRadius: 30))
-                } placeholder: {
-                    ProgressView()
+            ZStack {
+                
+                RoundedRectangle(cornerRadius: 30)
+                    .frame(width: 180, height: 250)
+                    .foregroundStyle(Color.mainAppBackground)
+                
+                Button {
+                    print("Food image tapped")
+                } label: {
+                    AsyncImage(url: URL(string: imageUrl)) { recipeImage in
+                        recipeImage
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 180, height: 250)
+                            .clipShape(RoundedRectangle(cornerRadius: 30))
+                    } placeholder: {
+                        ProgressView()
+                    }
                 }
             }
-
             
             VStack(alignment: .leading) {
                 Text(foodName)

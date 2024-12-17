@@ -15,7 +15,6 @@ struct HomeScreen: View {
     
     var body: some View {
         ZStack {
-            
             Color.mainAppBackground.ignoresSafeArea()
             
             ScrollView(showsIndicators: false) {
@@ -113,6 +112,9 @@ extension HomeScreen {
                     ForEach(recipes.prefix(7)) { recipe in
                         RecommendationUI(imageUrl: recipe.thumbnailURL, foodName: recipe.name, cooker: recipe.credits)
                     }
+                } else {
+                    customIndicator()
+                        .offset(x: UIScreen.main.bounds.width / 2 - 55, y: 0)
                 }
             }
             .padding(.leading, 15)
@@ -129,6 +131,9 @@ extension HomeScreen{
                     ForEach(recipes.suffix(7)) { recipe in
                         RecipeOfTheWeekUI(imageUrl: recipe.thumbnailURL, foodName: recipe.name, cooker: recipe.credits)
                     }
+                }else{
+                    customIndicator()
+                        .offset(x: UIScreen.main.bounds.width / 2 - 55, y: 0)
                 }
             }
             .padding(.horizontal, 15)
@@ -136,6 +141,25 @@ extension HomeScreen{
     }
 }
 
+//MARK: - Custom Indicator setup
+extension HomeScreen {
+    private func customIndicator() -> some View {
+        HStack {
+            Rectangle()
+                .frame(width: 10, height: 10)
+                .foregroundStyle(Color.clear)
+            Spacer()
+            CustomLoadingIndicator()
+                .frame(width: .infinity, height: 250, alignment: .center)
+            Spacer()
+            Rectangle()
+                .frame(width: 10, height: 10)
+                .foregroundStyle(Color.clear)
+        }
+    }
+}
+
+//MARK: - Additional Space
 extension HomeScreen {
     private func additionalSpace() -> some View {
         Rectangle()
@@ -143,6 +167,7 @@ extension HomeScreen {
             .foregroundStyle(Color.clear)
     }
 }
+
 #Preview {
     HomeScreen()
 }

@@ -14,8 +14,8 @@ class NetworkViewModel: ObservableObject{
     
     private let network = Network()
     private let headers = [
-        "x-rapidapi-key": "f35dbbce38msh6fb9fd99b90f5dap1a960fjsna68029951986",
-        "x-rapidapi-host": "tasty.p.rapidapi.com"
+        "x-rapidapi-key": Constant.apiKey,
+        "x-rapidapi-host": Constant.host
     ]
     private var cancellables = Set<AnyCancellable>()
     

@@ -12,14 +12,26 @@ struct DetailsScreen: View {
     @State var bookmarkImageFill: String? = "bookmark.fill"
     @State var bookmarkImageUnfill: String? = "bookmark"
     @State var bookmarkColor:Color? = Color.yellow
-        
+    
     var body: some View {
         VStack {
-            ZStack{
-                Image("creamyPasta")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: UIScreen.main.bounds.width, height: 200)
+            imageAndToolBar()
+            Spacer()
+        }
+        .edgesIgnoringSafeArea(.all)
+    }
+}
+
+//MARK: - Header, Image and tool bar
+extension DetailsScreen{
+    private func imageAndToolBar() -> some View{
+        ZStack{
+            Image("creamyPasta")
+                .resizable()
+                .scaledToFill()
+                .frame(width: UIScreen.main.bounds.width, height: 400)
+                .clipShape(Rectangle())
+            VStack {
                 HStack {
                     Button {
                         print("back button pressed")
@@ -31,7 +43,7 @@ struct DetailsScreen: View {
                             .foregroundStyle(.black)
                             .font(.system(size: 20))
                     }
-                    
+                    Spacer()
                     CustomAddButton(imageFill: $bookmarkImageFill,
                                     imageUnfill: $bookmarkImageUnfill,
                                     color: $bookmarkColor) { isToggled in
@@ -42,8 +54,11 @@ struct DetailsScreen: View {
                         }
                     }
                 }
+                .padding(.horizontal, 15)
+                .padding(.top, 50)
+                Spacer()
             }
-            Spacer()
+            .frame(width: UIScreen.main.bounds.width, height: 400)
         }
     }
 }

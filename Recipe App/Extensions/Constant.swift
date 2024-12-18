@@ -22,4 +22,8 @@ struct Constant {
     static let apiKey = "8c2a9ec916msh6f0d36debec4336p11cbe6jsn1090e092cee4"
     static let host = "tasty.p.rapidapi.com"
     
+    //MARK: - DETAILS SCREEN
+    static let bookmarkButtonImageFill = "bookmark.fill"
+    static let bookmarkButtonImageUnfill = "bookmark"
+    
 }

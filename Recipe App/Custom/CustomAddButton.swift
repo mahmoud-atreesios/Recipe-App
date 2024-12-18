@@ -9,9 +9,9 @@ import SwiftUI
 
 struct CustomAddButton: View {
     
-    @Binding var imageFill: String?
-    @Binding var imageUnfill: String?
-    @Binding var color: Color?
+    var imageFill: String?
+    var imageUnfill: String?
+    var color: Color?
     
     @State var toggle = false
     var onButtonPressed: ((Bool) -> Void)?
@@ -47,7 +47,7 @@ struct AddButtonsBootCamp_Previews: PreviewProvider {
     @State static var color:Color? = Color.red
     
     static var previews: some View {
-        CustomAddButton(imageFill: $imageFill, imageUnfill: $imageUnfill, color: $color)
+        CustomAddButton(imageFill: imageFill, imageUnfill: imageUnfill, color: color)
     }
 }
 

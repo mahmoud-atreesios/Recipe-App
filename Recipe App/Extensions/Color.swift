@@ -17,7 +17,12 @@ extension Color{
     static let mainAppBackground = Color(red: 251 / 255, green: 251 / 255, blue: 251 / 255)
     static let seeAllColor = Color(red: 17/255, green: 139/255, blue: 80/255)
     
+    // DETAILS SHEET
+    static let detailsButtonsColor = Color(red: 60 / 255, green: 61 / 255, blue: 55 / 255)
+    
     //CUSTOM TAB BAR
     static let tabBarItemColor = Color(red: 149 / 255, green: 210 / 255, blue: 179 / 255)
+    
+    
     
 }

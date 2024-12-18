@@ -9,16 +9,21 @@ import SwiftUI
 
 struct DetailsScreen: View {
     
-    @State var bookmarkImageFill: String? = "bookmark.fill"
-    @State var bookmarkImageUnfill: String? = "bookmark"
-    @State var bookmarkColor:Color? = Color.yellow
+    @State var showDetails: Bool = true
     
     var body: some View {
-        VStack {
-            imageAndToolBar()
-            Spacer()
+        ZStack {
+            VStack {
+                imageAndToolBar()
+                Spacer()
+            }
+            .edgesIgnoringSafeArea(.all)
+            
+                DetailsSheet()
+                    .background(Color.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 40))
+                    .offset(y: UIScreen.main.bounds.height * 0.30)
         }
-        .edgesIgnoringSafeArea(.all)
     }
 }
 
@@ -29,7 +34,7 @@ extension DetailsScreen{
             Image("creamyPasta")
                 .resizable()
                 .scaledToFill()
-                .frame(width: UIScreen.main.bounds.width, height: 400)
+                .frame(width: UIScreen.main.bounds.width, height: 500)
                 .clipShape(Rectangle())
             VStack {
                 HStack {
@@ -44,9 +49,9 @@ extension DetailsScreen{
                             .font(.system(size: 20))
                     }
                     Spacer()
-                    CustomAddButton(imageFill: $bookmarkImageFill,
-                                    imageUnfill: $bookmarkImageUnfill,
-                                    color: $bookmarkColor) { isToggled in
+                    CustomAddButton(imageFill: Constant.bookmarkButtonImageFill,
+                                    imageUnfill: Constant.bookmarkButtonImageUnfill,
+                                    color: Color.yellow) { isToggled in
                         if isToggled {
                             print("recipe saved in the data base")
                         } else {
@@ -58,7 +63,7 @@ extension DetailsScreen{
                 .padding(.top, 50)
                 Spacer()
             }
-            .frame(width: UIScreen.main.bounds.width, height: 400)
+            .frame(width: UIScreen.main.bounds.width, height: 500)
         }
     }
 }

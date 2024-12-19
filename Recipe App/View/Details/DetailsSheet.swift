@@ -8,25 +8,33 @@
 import SwiftUI
 
 struct DetailsSheet: View {
+    
+    var recipe: Result
+    
     var body: some View {
-        
-        VStack(alignment: .leading){
+        ZStack {
             
-            headerTitle()
-            headerDetails()
-            recipeDescription()
+            Color.white.ignoresSafeArea()
             
-            Spacer()
+            ScrollView {
+                VStack(alignment: .leading){
+                    headerTitle()
+                    headerDetails()
+                    recipeDescription()
+                    recipeInstruction()
+                    Spacer()
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 20)
+            }
         }
-        .padding(.horizontal, 20)
-        .padding(.top, 20)
     }
 }
 
 //MARK: - HEADER TITLE
 extension DetailsSheet{
     private func headerTitle() -> some View {
-        Text("Shrimp Scampi Pasta")
+        Text(recipe.name)
             .font(.title)
             .bold()
             .fontDesign(.monospaced)
@@ -52,7 +60,7 @@ extension DetailsSheet{
             )
             HStack(spacing: 3) {
                 Image(systemName: "flame.fill")
-                Text("370 kcl")
+                Text("\(recipe.nutrition.calories ?? 300) kcl")
                     .font(.caption)
             }
             .bold()
@@ -65,7 +73,7 @@ extension DetailsSheet{
             )
             HStack(spacing: 3) {
                 Image(systemName: "star.fill")
-                Text("4.8")
+                Text(String(format: "%.1f", (recipe.userRatings.score * 10) / 2))
                     .font(.caption)
             }
             .bold()
@@ -83,7 +91,7 @@ extension DetailsSheet{
 //MARK: - RECIPE DESCRIPTION
 extension DetailsSheet {
     private func recipeDescription() -> some View {
-        Text("Food, substance consisting essentially of protein, carbohydrate, fat, and other nutrients used in the body of an organism to sustain growth and vital processes and to furnish energy. The absorption and utilization of food by the body is fundamental to nutrition and is facilitated by digestion.")
+        Text(recipe.description ?? "foodDescription")
             .font(.callout)
             .fontDesign(.serif)
             .foregroundStyle(.secondary)
@@ -91,7 +99,29 @@ extension DetailsSheet {
     }
 }
 
+//MARK: - RECIPE INSTRUCTION
+extension DetailsSheet {
+    private func recipeInstruction() -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            if let instructions = recipe.instructions {
+                ForEach(instructions, id: \.displayText) { instruction in
+                    Text(instruction.displayText)
+                        .font(.callout)
+                        .fontDesign(.serif)
+                        .foregroundStyle(.black)
+                        .padding(.top, 10)
+                }
+            } else {
+                Text("No instructions available.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .padding()
+    }
+}
+
 #Preview {
-    DetailsSheet()
+    DetailsSheet(recipe: Result.mock)
 }
 

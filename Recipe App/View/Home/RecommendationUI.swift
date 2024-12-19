@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct RecommendationUI: View {
     
@@ -18,24 +19,25 @@ struct RecommendationUI: View {
         VStack(alignment: .leading) {
             
             ZStack {
-                
                 RoundedRectangle(cornerRadius: 30)
                     .frame(width: 180, height: 250)
                     .foregroundStyle(Color.mainAppBackground)
                 
-                Button {
-                    print("Food image tapped")
-                } label: {
-                    AsyncImage(url: URL(string: imageUrl)) { recipeImage in
-                        recipeImage
-                            .resizable()
-                            .scaledToFill()
-                            .frame(width: 180, height: 250)
-                            .clipShape(RoundedRectangle(cornerRadius: 30))
-                    } placeholder: {
-                        ProgressView()
-                    }
-                }
+                WebImage(url: URL(string: imageUrl))
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 180, height: 250)
+                    .clipShape(RoundedRectangle(cornerRadius: 30))
+                
+//                AsyncImage(url: URL(string: imageUrl)) { recipeImage in
+//                    recipeImage
+//                        .resizable()
+//                        .scaledToFill()
+//                        .frame(width: 180, height: 250)
+//                        .clipShape(RoundedRectangle(cornerRadius: 30))
+//                } placeholder: {
+//                    ProgressView()
+//                }
             }
             
             VStack(alignment: .leading) {

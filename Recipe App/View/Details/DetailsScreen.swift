@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct DetailsScreen: View {
     
-    @State var showDetails: Bool = true
-    
+    var recipe: Result
+        
     var body: some View {
         ZStack {
             VStack {
@@ -19,8 +20,7 @@ struct DetailsScreen: View {
             }
             .edgesIgnoringSafeArea(.all)
             
-                DetailsSheet()
-                    .background(Color.white)
+            DetailsSheet(recipe: recipe)
                     .clipShape(RoundedRectangle(cornerRadius: 40))
                     .offset(y: UIScreen.main.bounds.height * 0.30)
         }
@@ -31,11 +31,17 @@ struct DetailsScreen: View {
 extension DetailsScreen{
     private func imageAndToolBar() -> some View{
         ZStack{
-            Image("creamyPasta")
-                .resizable()
-                .scaledToFill()
-                .frame(width: UIScreen.main.bounds.width, height: 500)
-                .clipShape(Rectangle())
+            
+            if let imageUrl = recipe.thumbnailURL{
+                WebImage(url: URL(string: imageUrl))
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: UIScreen.main.bounds.width, height: 500)
+                    .clipShape(Rectangle())
+            }else{
+                ProgressView()
+            }
+            
             VStack {
                 HStack {
                     Button {
@@ -69,5 +75,5 @@ extension DetailsScreen{
 }
 
 #Preview {
-    DetailsScreen()
+    DetailsScreen(recipe: Result.mock)
 }

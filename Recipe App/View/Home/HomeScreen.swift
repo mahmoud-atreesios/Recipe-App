@@ -12,6 +12,8 @@ struct HomeScreen: View {
     @AppStorage("rootHomeScreen") var rootHomeScreen: Bool?
     @StateObject var networkViewModel = NetworkViewModel()
     @State var sth: String = ""
+    @State var showDetailsScreen: Bool = false
+    @State var selectedRecipe: Result?
     
     var body: some View {
         ZStack {
@@ -28,6 +30,11 @@ struct HomeScreen: View {
                     additionalSpace()
                     Spacer()
                 }
+            }
+        }
+        .sheet(isPresented: $showDetailsScreen) {
+            if let selectedRecipe = selectedRecipe {
+                DetailsScreen(recipe: selectedRecipe)
             }
         }
     }
@@ -110,7 +117,11 @@ extension HomeScreen {
             HStack(spacing: 10) {
                 if let recipes = networkViewModel.recipes?.results {
                     ForEach(recipes.prefix(7)) { recipe in
-                        RecommendationUI(imageUrl: recipe.thumbnailURL, foodName: recipe.name, cooker: recipe.credits)
+                        RecommendationUI(imageUrl: recipe.thumbnailURL ?? "", foodName: recipe.name, cooker: recipe.credits)
+                            .onTapGesture {
+                                showDetailsScreen.toggle()
+                                selectedRecipe = recipe
+                            }
                     }
                 } else {
                     customIndicator()
@@ -129,7 +140,7 @@ extension HomeScreen{
             HStack(spacing: 10) {
                 if let recipes = networkViewModel.recipes?.results {
                     ForEach(recipes.suffix(7)) { recipe in
-                        RecipeOfTheWeekUI(imageUrl: recipe.thumbnailURL, foodName: recipe.name, cooker: recipe.credits)
+                        RecipeOfTheWeekUI(imageUrl: recipe.thumbnailURL ?? "", foodName: recipe.name, cooker: recipe.credits)
                     }
                 }else{
                     customIndicator()

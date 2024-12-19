@@ -24,12 +24,12 @@ struct Result: Codable, Identifiable {
     var createdAt: Int
     var nutrition: Nutrition
     var description: String?
-    var thumbnailURL: String
+    var thumbnailURL: String?
     var totalTimeTier: TotalTimeTier?
     var language: String?
     var updatedAt: Int
-    var renditions: [Rendition]
-    var sections: [Section]
+    var renditions: [Rendition]?
+    var sections: [Section]?
     var tags: [Tag]
     var credits: [Credit]
 

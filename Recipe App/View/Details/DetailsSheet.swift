@@ -28,6 +28,9 @@ struct DetailsSheet: View {
                 .padding(.top, 20)
             }
         }
+        .clipShape(RoundedRectangle(cornerRadius: 40))
+        .padding(.top, UIScreen.main.bounds.height * 0.30)
+        .ignoresSafeArea()
     }
 }
 
@@ -45,10 +48,25 @@ extension DetailsSheet{
 extension DetailsSheet{
     private func headerDetails() -> some View {
         HStack {
+            //Cooking Time
             HStack(spacing: 3) {
                 Image(systemName: "clock.fill")
-                Text("30min")
-                    .font(.caption)
+                if let recipeTime = recipe.totalTimeTier?.displayTier{
+                    switch recipeTime {
+                    case .under15Minutes:
+                        Text("15 min")
+                            .font(.caption)
+                    case .under30Minutes:
+                        Text("30 min")
+                            .font(.caption)
+                    case .under45Minutes:
+                        Text("45 min")
+                            .font(.caption)
+                    }
+                }else {
+                    Text("30 min")
+                        .font(.caption)
+                }
             }
             .bold()
             .foregroundColor(.detailsButtonsColor)
@@ -58,6 +76,8 @@ extension DetailsSheet{
                     .foregroundStyle(Color.mainAppBackground)
                     .shadow(radius: 5)
             )
+            
+            //Calories Count
             HStack(spacing: 3) {
                 Image(systemName: "flame.fill")
                 Text("\(recipe.nutrition.calories ?? 300) kcl")
@@ -71,6 +91,8 @@ extension DetailsSheet{
                     .foregroundStyle(Color.mainAppBackground)
                     .shadow(radius: 5)
             )
+            
+            //Users Rating
             HStack(spacing: 3) {
                 Image(systemName: "star.fill")
                 Text(String(format: "%.1f", (recipe.userRatings.score * 10) / 2))

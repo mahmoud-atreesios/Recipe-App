@@ -14,7 +14,8 @@ struct RecipesModel: Codable {
 }
 
 // MARK: - RecipesList
-struct Result: Codable, Identifiable {
+struct Result: Codable, Identifiable, Equatable {
+    
     var id: Int
     var originalVideoURL: String?
     var country: String?
@@ -53,6 +54,11 @@ struct Result: Codable, Identifiable {
         case tags = "tags"
         case credits = "credits"
     }
+    
+    static func == (lhs: Result, rhs: Result) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
 }
 
 // MARK: - Credit

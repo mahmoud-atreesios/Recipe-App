@@ -18,12 +18,11 @@ struct DetailsScreen: View {
                 imageAndToolBar()
                 Spacer()
             }
-            .edgesIgnoringSafeArea(.all)
             
             DetailsSheet(recipe: recipe)
-                    .clipShape(RoundedRectangle(cornerRadius: 40))
-                    .offset(y: UIScreen.main.bounds.height * 0.30)
+            
         }
+        .edgesIgnoringSafeArea(.all)
     }
 }
 

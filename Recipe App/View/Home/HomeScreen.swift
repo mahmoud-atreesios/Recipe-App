@@ -41,7 +41,7 @@ struct HomeScreen: View {
 }
 
 //MARK: - Header UI
-extension HomeScreen{
+extension HomeScreen {
     private func headerView() -> some View {
         HStack {
             VStack(alignment: .leading) {
@@ -114,14 +114,24 @@ extension HomeScreen {
 extension HomeScreen {
     private func recommendationView() -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 10) {
+            HStack(spacing: 0) {
                 if let recipes = networkViewModel.recipes?.results {
+                    
                     ForEach(recipes.prefix(7)) { recipe in
-                        RecommendationUI(imageUrl: recipe.thumbnailURL ?? "", foodName: recipe.name, cooker: recipe.credits)
-                            .onTapGesture {
-                                showDetailsScreen.toggle()
-                                selectedRecipe = recipe
+                        
+                        if recipe == recipes[2]{
+                            RecommendationUI(imageUrl: nil, foodName: recipe.name, cooker: recipe.credits)
+                                .onTapGesture {
+                                    showDetailsScreen.toggle()
+                                    selectedRecipe = recipe
+                                }
+                        }else {
+                            RecommendationUI(imageUrl: recipe.thumbnailURL ?? "", foodName: recipe.name, cooker: recipe.credits)
+                                .onTapGesture {
+                                    showDetailsScreen.toggle()
+                                    selectedRecipe = recipe
                             }
+                        }
                     }
                 } else {
                     customIndicator()
@@ -134,7 +144,7 @@ extension HomeScreen {
 }
 
 //MARK: - RecipeOfTheWeekView
-extension HomeScreen{
+extension HomeScreen {
     private func recipeOfTheWeekView() -> some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 10) {

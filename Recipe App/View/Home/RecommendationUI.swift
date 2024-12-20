@@ -10,7 +10,7 @@ import SDWebImageSwiftUI
 
 struct RecommendationUI: View {
     
-    @State var imageUrl: String = "https://picsum.photos/250"
+    @State var imageUrl: String?
     @State var foodName: String = "Creamy Pasta"
     @State var cooker: [Credit]?
 
@@ -23,21 +23,20 @@ struct RecommendationUI: View {
                     .frame(width: 180, height: 250)
                     .foregroundStyle(Color.mainAppBackground)
                 
-                WebImage(url: URL(string: imageUrl))
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 180, height: 250)
-                    .clipShape(RoundedRectangle(cornerRadius: 30))
+                if let imageUrl = imageUrl{
+                    WebImage(url: URL(string: imageUrl))
+                        .resizable()
+                        //.scaledToFill()
+                        .frame(width: 180, height: 250)
+                        .clipShape(RoundedRectangle(cornerRadius: 30))
+                }else {
+                    Image("creamyCajunPasta")
+                        .resizable()
+                        //.scaledToFill()
+                        .frame(width: 180, height: 250)
+                        .clipShape(RoundedRectangle(cornerRadius: 30))
+                }
                 
-//                AsyncImage(url: URL(string: imageUrl)) { recipeImage in
-//                    recipeImage
-//                        .resizable()
-//                        .scaledToFill()
-//                        .frame(width: 180, height: 250)
-//                        .clipShape(RoundedRectangle(cornerRadius: 30))
-//                } placeholder: {
-//                    ProgressView()
-//                }
             }
             
             VStack(alignment: .leading) {
@@ -55,7 +54,6 @@ struct RecommendationUI: View {
                         .font(.footnote)
                         .foregroundStyle(.secondary)
                 }
-                
             }
             
             .bold()

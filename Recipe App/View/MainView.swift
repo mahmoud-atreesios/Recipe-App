@@ -10,20 +10,24 @@ import SwiftUI
 struct MainView: View {
     
     @State var buttonTapped: Bool = true
+    @State var showTabBar: Bool = true
     
     var body: some View {
         ZStack {
             if !buttonTapped {
                 Text("Hello, Mahmoud!")
             } else {
-                HomeScreen()
+                HomeScreen(showTabBar: $showTabBar)
             }
-            VStack {
-                Spacer()
-                customTabBar()
+            
+            if showTabBar{
+                VStack {
+                    Spacer()
+                    customTabBar()
+                }
+                .padding(.bottom, 30)
+                .ignoresSafeArea()
             }
-            .padding(.bottom, 30)
-            .ignoresSafeArea()
         }
     }
 }

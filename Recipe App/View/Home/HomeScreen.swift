@@ -15,6 +15,7 @@ struct HomeScreen: View {
     @State var showDetailsScreen: Bool = false
     @State var selectedRecipe: Result?
     @Namespace private var animationNamespace
+    @Binding var showTabBar: Bool
     
     var body: some View {
         ZStack {
@@ -38,8 +39,19 @@ struct HomeScreen: View {
             Group {
                 if showDetailsScreen, let selectedRecipe = selectedRecipe {
                     DetailsScreen(recipe: selectedRecipe, animationNamespace: animationNamespace, showDetailsScreen: $showDetailsScreen)
+                        .onAppear {
+                            showTabBar = false
+                        }
+                        .onDisappear {
+                            showTabBar = true
+                        }
                 }
             }
+            .onChange(of: showDetailsScreen) { newValue in
+                    if !newValue {
+                        showTabBar = true
+                    }
+                }
         )
         
         //MARK: - full screen cover
@@ -209,5 +221,5 @@ extension HomeScreen {
 }
 
 #Preview {
-    HomeScreen()
+    HomeScreen(showTabBar: .constant(false))
 }

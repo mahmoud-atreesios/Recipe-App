@@ -11,60 +11,37 @@ struct HomeScreen: View {
     
     @AppStorage("rootHomeScreen") var rootHomeScreen: Bool?
     @StateObject var networkViewModel = NetworkViewModel()
-    @State var sth: String = ""
-    @State var showDetailsScreen: Bool = false
-    @State var selectedRecipe: Result?
     @Namespace private var animationNamespace
     @Binding var showTabBar: Bool
+
+    @State var sth: String = ""
+    @State var showDetailsScreen: Bool = false
+    @State var showDetailsScreenFromRecipeOfTheWeek: Bool = false
+    @State var selectedRecipe: Result?
     
     var body: some View {
-        ZStack {
-            Color.mainAppBackground.ignoresSafeArea()
-            
-            ScrollView(showsIndicators: false) {
-                VStack(alignment: .leading) {
-                    headerView()
-                    searchBar()
-                    categoryBar(title: "Recommendation")
-                    recommendationView()
-                    categoryBar(title: "Recipes Of The Week")
-                    recipeOfTheWeekView()
-                    additionalSpace()
-                    Spacer()
-                }
-            }
-        }
-        
-        .overlay(
-            Group {
-                if showDetailsScreen, let selectedRecipe = selectedRecipe {
-                    DetailsScreen(recipe: selectedRecipe, animationNamespace: animationNamespace, showDetailsScreen: $showDetailsScreen)
-                        .onAppear {
-                            showTabBar = false
-                        }
-                        .onDisappear {
-                            showTabBar = true
-                        }
-                }
-            }
-            .onChange(of: showDetailsScreen) { newValue in
-                    if !newValue {
-                        showTabBar = true
+        NavigationStack {
+            ZStack {
+                Color.mainAppBackground.ignoresSafeArea()
+                
+                ScrollView(showsIndicators: false) {
+                    VStack(alignment: .leading) {
+                        headerView()
+                        searchBar()
+                        categoryBar(title: "Recommendation")
+                        recommendationView()
+                        categoryBar(title: "Recipes Of The Week")
+                        recipeOfTheWeekView()
+                        additionalSpace()
+                        Spacer()
                     }
                 }
-        )
-        
-        //MARK: - full screen cover
-        /*
-         .fullScreenCover(isPresented: Binding(
-             get: { showDetailsScreen && selectedRecipe != nil },
-             set: { showDetailsScreen = $0 }
-         )) {
-             if let selectedRecipe = selectedRecipe {
-                 DetailsScreen(recipe: selectedRecipe)
-             }
-         }
-         */
+            }
+            
+            .overlay(
+                showDetailsScreenHeroAnimation()
+            )
+        }
     }
 }
 
@@ -174,6 +151,28 @@ extension HomeScreen {
     }
 }
 
+//MARK: - Showing details screen with hero animation
+extension HomeScreen {
+    private func showDetailsScreenHeroAnimation() -> some View {
+        Group {
+            if showDetailsScreen, let selectedRecipe = selectedRecipe {
+                DetailsScreen(recipe: selectedRecipe, animationNamespace: animationNamespace, showDetailsScreen: $showDetailsScreen)
+                    .onAppear {
+                        showTabBar = false
+                    }
+                    .onDisappear {
+                        showTabBar = true
+                    }
+            }
+        }
+            .onChange(of: showDetailsScreen) { newValue in
+                if !newValue {
+                    showTabBar = true
+                }
+            }
+    }
+}
+
 //MARK: - RecipeOfTheWeekView
 extension HomeScreen {
     private func recipeOfTheWeekView() -> some View {
@@ -181,7 +180,9 @@ extension HomeScreen {
             HStack(spacing: 10) {
                 if let recipes = networkViewModel.recipes?.results {
                     ForEach(recipes.suffix(7)) { recipe in
-                        RecipeOfTheWeekUI(imageUrl: recipe.thumbnailURL ?? "", foodName: recipe.name, cooker: recipe.credits)
+                        NavigationLink(destination: DetailsScreen(recipe: recipe, animationNamespace: animationNamespace, showDetailsScreen: .constant(false))) {
+                            RecipeOfTheWeekUI(imageUrl: recipe.thumbnailURL ?? "", foodName: recipe.name, cooker: recipe.credits)
+                        }
                     }
                 }else{
                     customIndicator()
@@ -223,3 +224,22 @@ extension HomeScreen {
 #Preview {
     HomeScreen(showTabBar: .constant(false))
 }
+
+//MARK: - full screen cover for recipe of the week
+/*
+ .fullScreenCover(isPresented: Binding(
+     get: { showDetailsScreenFromRecipeOfTheWeek && selectedRecipe != nil },
+     set: { showDetailsScreenFromRecipeOfTheWeek = $0 }
+ )) {
+     if let selectedRecipe = selectedRecipe {
+         DetailsScreen(recipe: selectedRecipe, animationNamespace: animationNamespace, showDetailsScreen: $showDetailsScreenFromRecipeOfTheWeek)
+     }
+ }
+ */
+/*
+ RecipeOfTheWeekUI(imageUrl: recipe.thumbnailURL ?? "", foodName: recipe.name, cooker: recipe.credits)
+     .onTapGesture {
+         selectedRecipe = recipe
+         showDetailsScreenFromRecipeOfTheWeek.toggle()
+     }
+ */

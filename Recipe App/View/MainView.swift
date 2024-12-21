@@ -13,20 +13,22 @@ struct MainView: View {
     @State var showTabBar: Bool = true
     
     var body: some View {
-        ZStack {
-            if !buttonTapped {
-                Text("Hello, Mahmoud!")
-            } else {
-                HomeScreen(showTabBar: $showTabBar)
-            }
-            
-            if showTabBar{
-                VStack {
-                    Spacer()
-                    customTabBar()
+        NavigationStack {
+            ZStack {
+                if !buttonTapped {
+                    Text("Hello, Mahmoud!")
+                } else {
+                    HomeScreen(showTabBar: $showTabBar)
                 }
-                .padding(.bottom, 30)
-                .ignoresSafeArea()
+                
+                if showTabBar{
+                    VStack {
+                        Spacer()
+                        customTabBar()
+                    }
+                    .padding(.bottom, 30)
+                    .ignoresSafeArea()
+                }
             }
         }
     }

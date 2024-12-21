@@ -25,6 +25,7 @@ struct DetailsScreen: View {
             DetailsSheet(recipe: recipe)
         }
         .edgesIgnoringSafeArea(.all)
+        .navigationBarBackButtonHidden()
     }
 }
 
@@ -50,7 +51,7 @@ extension DetailsScreen{
                         withAnimation(.easeInOut) {
                             showDetailsScreen = false
                         }
-//                        dismiss()
+                        dismiss()
 //                        print("back button pressed")
                     } label: {
                         Image(systemName: "arrow.turn.up.left")

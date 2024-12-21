@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 struct RecipeOfTheWeekUI: View {
     
@@ -16,24 +17,17 @@ struct RecipeOfTheWeekUI: View {
     
     var body: some View {
         ZStack {
-            Button {
-                print("Food image tapped")
-            } label: {
-                AsyncImage(url: URL(string: imageUrl)) { recipeImage in
-                    recipeImage
-                        .resizable()
-                        .scaledToFill()
+            
+            WebImage(url: URL(string: imageUrl))
+                .resizable()
+                //.scaledToFill()
+                .frame(width: 300, height: 270)
+                .clipShape(RoundedRectangle(cornerRadius: 30))
+                .overlay {
+                    LinearGradient(colors: [.black,.white.opacity(0)], startPoint: .bottom, endPoint: .center)
                         .frame(width: 300, height: 270)
                         .clipShape(RoundedRectangle(cornerRadius: 30))
-                        .overlay {
-                            LinearGradient(colors: [.black,.white.opacity(0)], startPoint: .bottom, endPoint: .center)
-                                .frame(width: 300, height: 270)
-                                .clipShape(RoundedRectangle(cornerRadius: 30))
-                        }
-                } placeholder: {
-                    ProgressView()
                 }
-            }
             
             VStack{
                 Spacer()

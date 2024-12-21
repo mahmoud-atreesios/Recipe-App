@@ -14,6 +14,7 @@ struct HomeScreen: View {
     @State var sth: String = ""
     @State var showDetailsScreen: Bool = false
     @State var selectedRecipe: Result?
+    @Namespace private var animationNamespace
     
     var body: some View {
         ZStack {
@@ -32,11 +33,26 @@ struct HomeScreen: View {
                 }
             }
         }
-        .sheet(isPresented: $showDetailsScreen) {
-            if let selectedRecipe = selectedRecipe {
-                DetailsScreen(recipe: selectedRecipe)
+        
+        .overlay(
+            Group {
+                if showDetailsScreen, let selectedRecipe = selectedRecipe {
+                    DetailsScreen(recipe: selectedRecipe, animationNamespace: animationNamespace, showDetailsScreen: $showDetailsScreen)
+                }
             }
-        }
+        )
+        
+        //MARK: - full screen cover
+        /*
+         .fullScreenCover(isPresented: Binding(
+             get: { showDetailsScreen && selectedRecipe != nil },
+             set: { showDetailsScreen = $0 }
+         )) {
+             if let selectedRecipe = selectedRecipe {
+                 DetailsScreen(recipe: selectedRecipe)
+             }
+         }
+         */
     }
 }
 
@@ -120,17 +136,20 @@ extension HomeScreen {
                     ForEach(recipes.prefix(7)) { recipe in
                         
                         if recipe == recipes[2]{
-                            RecommendationUI(imageUrl: nil, foodName: recipe.name, cooker: recipe.credits)
+                            RecommendationUI(imageUrl: nil, foodName: recipe.name, cooker: recipe.credits, animationNamespace: animationNamespace)
                                 .onTapGesture {
                                     showDetailsScreen.toggle()
                                     selectedRecipe = recipe
                                 }
                         }else {
-                            RecommendationUI(imageUrl: recipe.thumbnailURL ?? "", foodName: recipe.name, cooker: recipe.credits)
+                            RecommendationUI(imageUrl: recipe.thumbnailURL ?? "", foodName: recipe.name, cooker: recipe.credits,animationNamespace: animationNamespace)
                                 .onTapGesture {
-                                    showDetailsScreen.toggle()
                                     selectedRecipe = recipe
-                            }
+                                    withAnimation(.easeInOut(duration: 0.3)) {
+                                        showDetailsScreen.toggle()
+                                    }
+                                }
+                                .matchedGeometryEffect(id: "recipeImage-\(recipe.id)", in: animationNamespace)
                         }
                     }
                 } else {

@@ -10,6 +10,7 @@ import SwiftUI
 struct DetailsSheet: View {
     
     var recipe: Result
+    @State var count = 0
     
     var body: some View {
         ZStack {
@@ -125,13 +126,24 @@ extension DetailsSheet {
 extension DetailsSheet {
     private func recipeInstruction() -> some View {
         VStack(alignment: .leading, spacing: 10) {
+            
+            Text("Instructions:")
+                .font(.title2)
+                .bold()
+            
             if let instructions = recipe.instructions {
-                ForEach(instructions, id: \.displayText) { instruction in
-                    Text(instruction.displayText)
-                        .font(.callout)
-                        .fontDesign(.serif)
-                        .foregroundStyle(.black)
-                        .padding(.top, 10)
+                ForEach(Array(instructions.enumerated()), id: \.element.displayText) { index, instruction in
+                    VStack(alignment: .leading, spacing: 0) {
+                        if index != instructions.count - 1 {
+                            Text("Step \(index + 1)")
+                                .font(.headline)
+                                .foregroundStyle(Color.seeAllColor)
+                        }
+                        Text(instruction.displayText)
+                            .font(.callout)
+                            .fontDesign(.serif)
+                            .foregroundStyle(.black)
+                    }
                 }
             } else {
                 Text("No instructions available.")

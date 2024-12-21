@@ -11,6 +11,10 @@ import SDWebImageSwiftUI
 struct DetailsScreen: View {
     
     var recipe: Result
+    var animationNamespace: Namespace.ID
+    @Binding var showDetailsScreen: Bool
+    
+    @Environment(\.dismiss) private var dismiss
         
     var body: some View {
         ZStack {
@@ -18,9 +22,7 @@ struct DetailsScreen: View {
                 imageAndToolBar()
                 Spacer()
             }
-            
             DetailsSheet(recipe: recipe)
-            
         }
         .edgesIgnoringSafeArea(.all)
     }
@@ -37,6 +39,7 @@ extension DetailsScreen{
                     .scaledToFill()
                     .frame(width: UIScreen.main.bounds.width, height: 500)
                     .clipShape(Rectangle())
+                    .matchedGeometryEffect(id: "recipeImage-\(recipe.id)", in: animationNamespace)
             }else{
                 ProgressView()
             }
@@ -44,7 +47,11 @@ extension DetailsScreen{
             VStack {
                 HStack {
                     Button {
-                        print("back button pressed")
+                        withAnimation(.easeInOut) {
+                            showDetailsScreen = false
+                        }
+//                        dismiss()
+//                        print("back button pressed")
                     } label: {
                         Image(systemName: "arrow.turn.up.left")
                             .frame(width: 40, height: 40)
@@ -73,6 +80,6 @@ extension DetailsScreen{
     }
 }
 
-#Preview {
-    DetailsScreen(recipe: Result.mock)
-}
+//#Preview {
+//    DetailsScreen(recipe: Result.mock)
+//}

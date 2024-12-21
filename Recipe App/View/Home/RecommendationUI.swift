@@ -13,6 +13,7 @@ struct RecommendationUI: View {
     @State var imageUrl: String?
     @State var foodName: String = "Creamy Pasta"
     @State var cooker: [Credit]?
+    var animationNamespace: Namespace.ID
 
     
     var body: some View {
@@ -29,12 +30,14 @@ struct RecommendationUI: View {
                         //.scaledToFill()
                         .frame(width: 180, height: 250)
                         .clipShape(RoundedRectangle(cornerRadius: 30))
+                        .matchedGeometryEffect(id: "recipeImage-\(UUID())", in: animationNamespace)
                 }else {
                     Image("creamyCajunPasta")
                         .resizable()
                         //.scaledToFill()
                         .frame(width: 180, height: 250)
                         .clipShape(RoundedRectangle(cornerRadius: 30))
+                        .matchedGeometryEffect(id: "recipeImage-\(UUID())", in: animationNamespace)
                 }
                 
             }
@@ -64,6 +67,6 @@ struct RecommendationUI: View {
     }
 }
 
-#Preview {
-    RecommendationUI()
-}
+//#Preview {
+//    RecommendationUI()
+//}

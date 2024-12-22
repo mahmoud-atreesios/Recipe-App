@@ -23,11 +23,19 @@ struct DetailsSheet: View {
                     headerDetails()
                     recipeDescription()
                     recipeInstruction()
+                    additionalSpace()
                     Spacer()
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 20)
             }
+            
+            VStack {
+                Spacer()
+                watchVideoButton()
+            }
+            .padding(.bottom, 5)
+            
         }
         .clipShape(RoundedRectangle(cornerRadius: 40))
         .padding(.top, UIScreen.main.bounds.height * 0.30)
@@ -152,6 +160,39 @@ extension DetailsSheet {
             }
         }
         .padding()
+    }
+}
+
+//MARK: - WATCH VIDEO BUTTON UI
+extension DetailsSheet {
+    private func watchVideoButton() -> some View {
+        Button {
+            print("Watch video button pressed")
+        } label: {
+            RoundedRectangle(cornerRadius: 20)
+                .frame(width: 250, height: 70)
+                .foregroundStyle(Color(red: 178 / 255, green: 201 / 255, blue: 173 / 255))
+                .overlay {
+                    HStack {
+                        Image(systemName: "play.rectangle.fill")
+                            .font(.title2)
+                        Text("Watch video")
+                            .font(.title3)
+                            .bold()
+                    }
+                    .foregroundStyle(.white)
+                }
+        }
+
+    }
+}
+
+//MARK: - Additional Space
+extension DetailsSheet {
+    private func additionalSpace() -> some View {
+        Rectangle()
+            .frame(width: .infinity, height: 45)
+            .foregroundStyle(Color.clear)
     }
 }
 

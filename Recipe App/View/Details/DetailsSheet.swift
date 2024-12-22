@@ -6,6 +6,9 @@
 //
 
 import SwiftUI
+import AVKit
+import AVFoundation
+
 
 struct DetailsSheet: View {
     
@@ -14,9 +17,7 @@ struct DetailsSheet: View {
     
     var body: some View {
         ZStack {
-            
             Color.white.ignoresSafeArea()
-            
             ScrollView {
                 VStack(alignment: .leading){
                     headerTitle()
@@ -34,7 +35,7 @@ struct DetailsSheet: View {
                 Spacer()
                 watchVideoButton()
             }
-            .padding(.bottom, 5)
+            .padding(.bottom, 15)
             
         }
         .clipShape(RoundedRectangle(cornerRadius: 40))
@@ -167,7 +168,12 @@ extension DetailsSheet {
 extension DetailsSheet {
     private func watchVideoButton() -> some View {
         Button {
-            print("Watch video button pressed")
+            if let videoURLString = recipe.originalVideoURL,
+               let url = URL(string: videoURLString) {
+                playVideo(url: url)
+            } else {
+                print("There is no video URL")
+            }
         } label: {
             RoundedRectangle(cornerRadius: 20)
                 .frame(width: 250, height: 70)
@@ -184,6 +190,34 @@ extension DetailsSheet {
                 }
         }
 
+    }
+}
+
+//MARK: - PLAY VIDEO FUNCTION
+extension DetailsSheet {
+
+    private func playVideo(url: URL) {
+        
+        do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .moviePlayback, options: [])
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch {
+            print("Failed to set up AVAudioSession: \(error.localizedDescription)")
+        }
+        
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let rootViewController = windowScene.windows.first?.rootViewController else {
+            print("Failed to find root view controller")
+            return
+        }
+
+        let player = AVPlayer(url: url)
+        let playerViewController = AVPlayerViewController()
+        playerViewController.player = player
+
+        rootViewController.present(playerViewController, animated: true) {
+            player.playImmediately(atRate: 1.0)
+        }
     }
 }
 

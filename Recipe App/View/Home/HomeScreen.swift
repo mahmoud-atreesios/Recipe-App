@@ -11,10 +11,11 @@ struct HomeScreen: View {
     
     @AppStorage("rootHomeScreen") var rootHomeScreen: Bool?
     @StateObject var networkViewModel = NetworkViewModel()
-    @Namespace private var animationNamespace
+    @Namespace var animationNamespace
     @Binding var showTabBar: Bool
+    @FocusState var isSearchFieldFocused: Bool
 
-    @State var sth: String = ""
+    @State var searchQuery: String = ""
     @State var showDetailsScreen: Bool = false
     @State var showDetailsScreenFromRecipeOfTheWeek: Bool = false
     @State var selectedRecipe: Result?
@@ -22,6 +23,7 @@ struct HomeScreen: View {
     var body: some View {
         NavigationStack {
             ZStack {
+                
                 Color.mainAppBackground.ignoresSafeArea()
                 
                 ScrollView(showsIndicators: false) {
@@ -36,11 +38,22 @@ struct HomeScreen: View {
                         Spacer()
                     }
                 }
+                .onTapGesture {
+                    UIApplication.shared.endEditing()
+                }
+                
+                VStack{
+                    Spacer()
+                    overlayView()
+                }
+                
             }
-            
             .overlay(
                 showDetailsScreenHeroAnimation()
             )
+            .onChange(of: isSearchFieldFocused) { focused in
+                showTabBar = false
+            }
         }
     }
 }
@@ -67,6 +80,7 @@ extension HomeScreen {
                 .clipShape(Circle())
                 .padding(.trailing, 25)
         }
+        .opacity(searchQuery.isEmpty ? 1 : 0)
     }
 }
 
@@ -74,12 +88,15 @@ extension HomeScreen {
 extension HomeScreen {
     private func searchBar() -> some View {
         ZStack {
-            TextField("Search any recipes", text: $sth)
+            TextField("Search any recipes", text: $searchQuery)
                 .padding(.leading, 15)
                 .frame(width: 330, height: 50)
                 .background(Color.white)
                 .cornerRadius(20)
                 .shadow(radius: 10)
+                .focused($isSearchFieldFocused)
+                .offset(y: isSearchFieldFocused ? -100 : 0)
+                .animation(.easeInOut, value: isSearchFieldFocused)
             
             HStack {
                 Spacer()
@@ -93,6 +110,8 @@ extension HomeScreen {
                 }
                 .padding(.trailing, 50)
             }
+            .offset(y: isSearchFieldFocused ? -100 : 0)
+            .animation(.easeInOut, value: isSearchFieldFocused)
             
         }
     }
@@ -191,6 +210,22 @@ extension HomeScreen {
             }
             .padding(.horizontal, 15)
         }
+    }
+}
+
+// MARK: - Overlay View
+extension HomeScreen {
+    private func overlayView() -> some View {
+            ZStack{
+                Color.gray.ignoresSafeArea()
+                RoundedRectangle(cornerRadius: 20)
+                    .frame(width: 200, height: 200)
+            }
+            .frame(width: UIScreen.main.bounds.width, height: isSearchFieldFocused ? 700 : 0)
+            .clipShape(RoundedRectangle(cornerRadius: 20))
+            //.opacity(!searchQuery.isEmpty ? 1 : 0)
+            .animation(.easeInOut, value: isSearchFieldFocused)
+        
     }
 }
 

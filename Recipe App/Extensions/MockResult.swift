@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension Result {
     static let mock = Result(
@@ -51,4 +52,11 @@ extension Tag {
 
 extension Credit {
     static let mock = Credit(name: "Mahmoud Atrees")
+}
+
+// MARK: - UIApplication Extension
+extension UIApplication {
+    func endEditing() {
+        sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
 }

@@ -19,7 +19,7 @@ struct Constant {
                                      "https://build.spline.design/DUhZVZ6Q05TdE6f41AAS/scene.splineswift"]
     
     //MARK: - API
-    static let apiKey = "8c2a9ec916msh6f0d36debec4336p11cbe6jsn1090e092cee4"
+    static let apiKey = "a02cdd1b2cmsh315358f0221005dp18353ejsn299bcfd80b49"
     static let host = "tasty.p.rapidapi.com"
     
     //MARK: - DETAILS SCREEN

@@ -14,7 +14,7 @@ struct HomeScreen: View {
     @Namespace var animationNamespace
     @Binding var showTabBar: Bool
     @FocusState var isSearchFieldFocused: Bool
-
+    
     @State var searchQuery: String = ""
     @State var showDetailsScreen: Bool = false
     @State var showDetailsScreenFromRecipeOfTheWeek: Bool = false
@@ -22,32 +22,33 @@ struct HomeScreen: View {
     
     var body: some View {
         NavigationStack {
-            ZStack {
-                
-                Color.mainAppBackground.ignoresSafeArea()
-                
-                ScrollView(showsIndicators: false) {
-                    VStack(alignment: .leading) {
-                        headerView()
-                        searchBar()
-                        categoryBar(title: "Recommendation")
-                        recommendationView()
-                        categoryBar(title: "Recipes Of The Week")
-                        recipeOfTheWeekView()
-                        additionalSpace()
+            GeometryReader { _ in
+                ZStack {
+                    Color.mainAppBackground.ignoresSafeArea()
+                    
+                    ScrollView(showsIndicators: false) {
+                        VStack(alignment: .leading) {
+                            headerView()
+                            searchBar()
+                            categoryBar(title: "Recommendation")
+                            recommendationView()
+                            categoryBar(title: "Recipes Of The Week")
+                            recipeOfTheWeekView()
+                            additionalSpace()
+                            Spacer()
+                        }
+                    }
+                    .onTapGesture {
+                        UIApplication.shared.endEditing()
+                    }
+                    
+                    VStack{
                         Spacer()
+                        overlayView()
                     }
                 }
-                .onTapGesture {
-                    UIApplication.shared.endEditing()
-                }
-                
-                VStack{
-                    Spacer()
-                    overlayView()
-                }
-                
             }
+            .ignoresSafeArea(.keyboard, edges: .bottom)
             .overlay(
                 showDetailsScreenHeroAnimation()
             )
@@ -95,7 +96,7 @@ extension HomeScreen {
                 .cornerRadius(20)
                 .shadow(radius: 10)
                 .focused($isSearchFieldFocused)
-                .offset(y: isSearchFieldFocused ? -100 : 0)
+                .offset(y: isSearchFieldFocused ? -UIScreen.main.bounds.height * 0.1 : 0)
                 .animation(.easeInOut, value: isSearchFieldFocused)
             
             HStack {
@@ -110,7 +111,7 @@ extension HomeScreen {
                 }
                 .padding(.trailing, 50)
             }
-            .offset(y: isSearchFieldFocused ? -100 : 0)
+            .offset(y: isSearchFieldFocused ? -UIScreen.main.bounds.height * 0.1 : 0)
             .animation(.easeInOut, value: isSearchFieldFocused)
             
         }
@@ -218,10 +219,22 @@ extension HomeScreen {
     private func overlayView() -> some View {
             ZStack{
                 Color.gray.ignoresSafeArea()
-                RoundedRectangle(cornerRadius: 20)
-                    .frame(width: 200, height: 200)
+                
+                VStack {
+                    HStack {
+                        Spacer()
+                        Image(systemName: "xmark.circle.fill")
+                            .font(.title)
+                            .onTapGesture {
+                                UIApplication.shared.endEditing()
+                            }
+                    }
+                    .padding()
+                    Spacer()
+                }
+                
             }
-            .frame(width: UIScreen.main.bounds.width, height: isSearchFieldFocused ? 700 : 0)
+            .frame(width: UIScreen.main.bounds.width, height: isSearchFieldFocused ? UIScreen.main.bounds.height * 0.75 : 0)
             .clipShape(RoundedRectangle(cornerRadius: 20))
             //.opacity(!searchQuery.isEmpty ? 1 : 0)
             .animation(.easeInOut, value: isSearchFieldFocused)

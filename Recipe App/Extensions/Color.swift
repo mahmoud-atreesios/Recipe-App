@@ -23,6 +23,9 @@ extension Color{
     //CUSTOM TAB BAR
     static let tabBarItemColor = Color(red: 149 / 255, green: 210 / 255, blue: 179 / 255)
     
+    //Color background search items
+    static let searchBackgroundColor = Color(red: 229 / 255, green: 225 / 255, blue: 218 / 255)
+    
     
     
 }

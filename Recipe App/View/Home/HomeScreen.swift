@@ -44,7 +44,7 @@ struct HomeScreen: View {
                     
                     VStack{
                         Spacer()
-                        overlayView()
+                        searchOverlayView()
                     }
                 }
             }
@@ -214,31 +214,58 @@ extension HomeScreen {
     }
 }
 
-// MARK: - Overlay View
+// MARK: - Search Overlay View
 extension HomeScreen {
-    private func overlayView() -> some View {
-            ZStack{
-                Color.gray.ignoresSafeArea()
+    private func searchOverlayView() -> some View {
+        ZStack{
+            Color.onBoardingRectangleColor.ignoresSafeArea()
+            
+            VStack {
                 
-                VStack {
-                    HStack {
-                        Spacer()
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.title)
-                            .onTapGesture {
-                                UIApplication.shared.endEditing()
+                headerOfSearchOverlayView()
+                
+                Spacer()
+                
+                ScrollView {
+                    VStack (spacing: 0){
+                        if let recipes = networkViewModel.recipes?.results {
+                            ForEach(recipes.suffix(12)) { recipe in
+                                NavigationLink(destination: DetailsScreen(recipe: recipe, animationNamespace: animationNamespace, showDetailsScreen: .constant(false))) {
+                                    SearchItemsUI(imageUrl: recipe.thumbnailURL ?? "", foodName: recipe.name, cooker: recipe.credits)
+                                }
                             }
+                        }
                     }
-                    .padding()
-                    Spacer()
                 }
-                
+                Spacer()
             }
-            .frame(width: UIScreen.main.bounds.width, height: isSearchFieldFocused ? UIScreen.main.bounds.height * 0.75 : 0)
-            .clipShape(RoundedRectangle(cornerRadius: 20))
-            //.opacity(!searchQuery.isEmpty ? 1 : 0)
-            .animation(.easeInOut, value: isSearchFieldFocused)
-        
+        }
+        .frame(width: UIScreen.main.bounds.width, height: isSearchFieldFocused ? UIScreen.main.bounds.height * 0.75 : 0)
+        .opacity(isSearchFieldFocused ? 1 : 0)
+        .animation(.easeInOut, value: isSearchFieldFocused)
+    }
+}
+
+//MARK: - Header of search overlay view
+extension HomeScreen {
+    private func headerOfSearchOverlayView() -> some View {
+        HStack {
+            Text("Results")
+                .font(.title)
+                .bold()
+                .padding(.leading, 15)
+                .padding(.top, 10)
+            
+            Spacer()
+            
+            Image(systemName: "xmark.circle.fill")
+                .font(.title)
+                .onTapGesture {
+                    UIApplication.shared.endEditing()
+                }
+                .padding(.trailing, 15)
+                .padding(.top, 10)
+        }
     }
 }
 

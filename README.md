@@ -9,14 +9,14 @@ Welcome to the **RecipeMaster App**! This application is designed to help food l
 ## Screenshots
 ### Home Screen, Details Screen
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/45f3bb56-b7da-4478-ad2a-4ebc24449f41" alt="Home" width="50%" />
-  <img src="https://github.com/user-attachments/assets/b9d2fbe9-a624-4276-9185-b262a9f9073b" alt="Details" width="50%" />
+  <img src="https://github.com/user-attachments/assets/45f3bb56-b7da-4478-ad2a-4ebc24449f41" alt="Home" width="30%" />
+  <img src="https://github.com/user-attachments/assets/b9d2fbe9-a624-4276-9185-b262a9f9073b" alt="Details" width="30%" />
 </p>
 
 ### Video Screen, Search Screen
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/39317994-3311-474e-a7a3-0909aa0dcafa" alt="Video" width="50%" />
-  <img src="https://github.com/user-attachments/assets/f28eec16-f9b1-4766-a75b-33f7a22d6049" alt="Search" width="50%" />
+  <img src="https://github.com/user-attachments/assets/39317994-3311-474e-a7a3-0909aa0dcafa" alt="Video" width="40%" />
+  <img src="https://github.com/user-attachments/assets/f28eec16-f9b1-4766-a75b-33f7a22d6049" alt="Search" width="40%" />
 </p>
 
 ---
